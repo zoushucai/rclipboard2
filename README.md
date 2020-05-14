@@ -1,7 +1,13 @@
 # rclipboard: clipboard.js for R/Shiny Applications
 参考： https://github.com/sbihorel/rclipboard
 
+## 安装
+
+```R
+devtools::install_github("zoushucai/rclipboard2")
+```
 ##   在此基础上新增函数 rclipButtonList
+
 
 - 可用于一切可打印的R对象,包含`list` `,data.frame`, `matrix`等
 
