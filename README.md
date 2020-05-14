@@ -1,57 +1,42 @@
 # rclipboard: clipboard.js for R/Shiny Applications
 
-### Introduction
-[clipboard.js](https://clipboardjs.com/) is a super light javascript framework,
-which provides copy-to-clipboard functionality using HTML5. The simple `rclipboard`
-R package is simple and leverages `clipboard.js` functionality to provide a
-reactive copy-to-clipboard UI button component, called `rclipButton`, for
-[Shiny](http://shiny.rstudio.com/) R applications.
-
-### Example
-
-This example works when deployed on a Shiny server or when it is run from
-RStudio. However, because of limitations in the web engine of RStudio versions
-prior to 1.2, the rclipButton does not work natively when the application is run
-locally. A workaround must be implemented in the form of an observeEvent associated
-to the rclipButton and using the clipr function from the clipr package.
-
-This workaround is not required if you run your applications in RStudio versions 
-\>= 1.2.
+参考： https://github.com/sbihorel/rclipboard
+##  在此基础上新增函数 rclipButtonList
++  可用于剪切 list
++  一个字符串（即纯文本）
 
 
 ```R
-library(rclipboard)
-library(shiny)
+ library(rclipboard)
+    library(shiny)
 
-# The UI
-ui <- bootstrapPage(
-  
-  rclipboardSetup(),
-  
-  # Add a text input
-  textInput("copytext", "Copy this:", "Zlika!"),
+    # The UI
+    ui <- bootstrapPage(
+      # 剪切板声明
+      rclipboardSetup(),
 
-  # UI ouputs for the copy-to-clipboard buttons
-  uiOutput("clip"),
-  
-  # A text input for testing the clipboard content.
-  textInput("paste", "Paste here:")
-  
-)
+      # 在UI界面展示剪切板按钮
+      uiOutput("clip"),
 
-# The server
-server <- function(input, output) {
+      # 输出文本
+      verbatimTextOutput("default")
+    )
 
-  # Add clipboard buttons
-  output$clip <- renderUI({
-    rclipButton("clipbtn", "rclipButton Copy", input$copytext, icon("clipboard"))
-  })
-  
-  # Workaround for execution within RStudio version < 1.2
-  observeEvent(input$clipbtn, clipr::write_clip(input$copytext))
-  
-}
+    # The server
+    server <- function(input, output) {
 
-shinyApp(ui = ui, server = server)
+      # 添加一个剪切板按钮--- 建议在server中添加
+      output$clip <- renderUI({
+        rclipButtonList("default", "rclipButton Copy", sessionInfo(), icon("clipboard"))
+      })
+
+      # 输出文本
+      output$default <- renderPrint({
+          sessionInfo()
+      })
+
+    }
+
+    shinyApp(ui = ui, server = server)
 
 ```
