@@ -1,10 +1,9 @@
 # rclipboard: clipboard.js for R/Shiny Applications
 参考： https://github.com/sbihorel/rclipboard
 
-<<<<<<< HEAD
-在此基础上新增函数 rclipButtonList
-可用于剪切 list, list包含data.frame
-一个字符串（即纯文本）
+##   在此基础上新增函数 rclipButtonList
+
+- 可用于一切可打印的R对象,包含`list` `,data.frame`, `matrix`等
 
 
 ```R
